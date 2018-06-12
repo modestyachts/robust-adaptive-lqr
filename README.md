@@ -4,4 +4,4 @@ This repository contains the code base necessary for running numerical adaptive 
 
 This project is licensed under the terms of the MIT license.
 
-[1] Dean, Sarah, Horia Mania, Nikolai Matni, Benjamin Recht, and Stephen Tu. "Regret Bounds for Robust Adaptive Control of the Linear Quadratic Regulator." *arXiv preprint arXiv:1805.09388 (2018).*
+[1] Sarah Dean, Horia Mania, Nikolai Matni, Benjamin Recht, and Stephen Tu. "Regret Bounds for Robust Adaptive Control of the Linear Quadratic Regulator." *arXiv preprint arXiv:1805.09388 (2018).*
