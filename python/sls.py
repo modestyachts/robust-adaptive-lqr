@@ -199,10 +199,10 @@ def sls_synth(Q, R, Ahat, Bhat, eps_A, eps_B, T, gamma, alpha, logger=None):
     R_sqrt = utils.psd_sqrt(R)
 
     # Phi_x = \sum_{k=1}^{T} Phi_x[k] z^{-k}
-    Phi_x = cvx.Variable(T*n, n, name="Phi_x")
+    Phi_x = cvx.Variable((T*n, n), name="Phi_x")
 
     # Phi_u = \sum_{k=1}^{T} Phi_u[k] z^{-k}
-    Phi_u = cvx.Variable(T*p, n, name="Phi_u")
+    Phi_u = cvx.Variable((T*p, n), name="Phi_u")
 
     # htwo_cost
     htwo_cost = cvx.Variable(name="htwo_cost")
@@ -275,7 +275,7 @@ def sls_synth(Q, R, Ahat, Bhat, eps_A, eps_B, T, gamma, alpha, logger=None):
         [[np.zeros((n, n)), np.zeros((n, p))]] +
         [[mult_x*Phi_x[n*k:n*(k+1), :].T, mult_u*Phi_u[p*k:p*(k+1), :].T] for k in range(T)])
 
-    Q = cvx.Semidef(n*(T+1), name="Q")
+    Q = cvx.Variable((n*(T+1), n*(T+1)), name="Q", PSD=True)
 
     # Constraint (5.44)
 
@@ -293,7 +293,7 @@ def sls_synth(Q, R, Ahat, Bhat, eps_A, eps_B, T, gamma, alpha, logger=None):
     constr.append(
         cvx.bmat([
             [Q, Hbar],
-            [Hbar.T, np.eye(n+p)]]) == cvx.Semidef(n*(T+1) + (n+p)))
+            [Hbar.T, np.eye(n+p)]]) == cvx.Variable((n*(T+1) + (n+p), n*(T+1) + (n+p)), PSD=True))
 
     prob = cvx.Problem(cvx.Minimize(htwo_cost), constr)
     prob.solve(solver=cvx.SCS)
